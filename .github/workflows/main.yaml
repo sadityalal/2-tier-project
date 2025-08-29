@@ -21,7 +21,7 @@ jobs:
       - name: Fetch Version
         id: fetch_version
         run: |
-          VERSION=$(cat ./2tier/Version)
+          VERSION=$(cat ./2-tier/Version)
           echo "Fetched version: $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
