@@ -10,7 +10,7 @@ ports:
   port: 5000
   targetPort: 5000
   protocol: TCP
-  nodePort: 30095
+  nodePort: 30099
 
 service:
   type: NodePort

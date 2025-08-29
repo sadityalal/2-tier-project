@@ -10,7 +10,7 @@ ports:
   port: 80
   targetPort: 80
   protocol: TCP
-  nodePort: 30094
+  nodePort: 30098
 
 service:
   type: NodePort
