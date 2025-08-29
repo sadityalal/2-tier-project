@@ -46,7 +46,7 @@ resources:
     cpu: 250m
 
 secrets:
-  enabled: yes
+  enabled: true
   name: mysql-sec
 
 env:
