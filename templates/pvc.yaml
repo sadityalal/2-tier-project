@@ -1,0 +1,21 @@
+{{- if .Values.volumes.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: {{ .Values.volumes.pvc }}
+  annotations:
+    "helm.sh/resource-policy": keep
+  labels: {{ include "mylabels" . | nindent 4 }}
+spec:
+  resources:
+    requests:
+      storage: 500Mi
+  storageClassName: {{ .Values.volumes.storageClassName }}
+  volumeName: {{ .Values.volumes.pv }}
+  accessModes:
+  - {{ .Values.volumes.accessModes.type }}
+  selector:
+    matchLabels: {{ include "mylabels" . | nindent 6 }}
+
+{{- end -}}

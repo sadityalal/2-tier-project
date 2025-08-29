@@ -1,0 +1,76 @@
+replicaCount: 1
+namespace: "database"
+
+image:
+  repository: saurabhred
+  name: mysql-db
+  tag: 9.4.0
+
+ports:
+  port: 3306
+  targetPort: 3306
+  protocol: TCP
+  nodePort: xxxxx
+
+service:
+  type: ClusterIP
+
+labels:
+  app: mysql
+  tier: database
+  env: test
+
+serviceAccount:
+  enabled: true
+  name: mysql-sa
+  resources: ["apps", "services", "configmaps", "secrets", "deployments", "pods"]
+  actions: ["list", "get", "apply", "patch"]
+
+volumes:
+  enabled: true
+  mountPathName: database-data
+  pv: database-pv
+  pvc: database-pvc
+  storageClassName: local-storage
+  path: /var/lib/mysql
+  pvpath: /database
+  accessModes:
+    type: "ReadWriteOnce"
+
+resources:
+  requests:
+    memory: 250Mi
+    cpu: 50m
+  limits:
+    memory: 500Mi
+    cpu: 250m
+
+secrets:
+  enabled: true
+  name: mysql-sec
+
+env:
+  MYSQL_ROOT_PASSWORD: main_key
+  MYSQL_PASSWORD: user_key
+  MYSQL_USER: username
+  MYSQL_DATABASE: db_name
+
+configmaps:
+  enabled: true
+
+probes:
+  enabled: true
+  readinessProbe:
+    tcpSocket:
+      port: 3306
+    initialDelaySeconds: 120
+    periodSeconds: 10
+  livenessProbe:
+    tcpSocket:
+      port: 3306
+    initialDelaySeconds: 120
+    periodSeconds: 10
+
+initscript:
+  enabled: true
+  name: mysql-init

@@ -1,0 +1,20 @@
+{{- if .Values.volumes.enabled -}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.volumes.pv }}
+  annotations:
+    "helm.sh/resource-policy": keep
+  labels: {{ include "mylabels" . | nindent 4 }}
+spec:
+  accessModes:
+  - {{ .Values.volumes.accessModes.type }}
+  capacity:
+    storage: 1Gi
+  storageClassName: {{ .Values.volumes.storageClassName }}
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: {{ .Values.volumes.pvpath }}
+    type: DirectoryOrCreate
+
+{{- end -}}

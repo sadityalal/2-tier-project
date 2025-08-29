@@ -1,0 +1,77 @@
+replicaCount: 1
+namespace: "backend"
+
+image:
+  repository: saurabhred
+  name: backend-flask
+  tag: latest
+
+ports:
+  port: 5000
+  targetPort: 5000
+  protocol: TCP
+  nodePort: 30095
+
+service:
+  type: NodePort
+
+labels:
+  app: flask
+  tier: backend
+  env: test
+
+serviceAccount:
+  enabled: true
+  name: backend-sa
+  resources: ["apps", "services", "configmaps", "secrets", "deployments", "pods"]
+  actions: ["list", "get", "apply", "patch"]
+
+volumes:
+  enabled: true
+  mountPathName: backend-data
+  pv: backend-pv
+  pvc: backend-pvc
+  storageClassName: local-storage
+  path: /app-data
+  pvpath: /app-data
+  accessModes:
+    type: "ReadWriteOnce"
+
+resources:
+  requests:
+    memory: 250Mi
+    cpu: 50m
+  limits:
+    memory: 500Mi
+    cpu: 250m
+
+secrets:
+  enabled: true
+  name: flask-sec
+
+configmaps:
+  enabled: false
+
+env:
+  MYSQL_ROOT_PASSWORD: main_key
+  MYSQL_PASSWORD: user_key
+  MYSQL_USER: username
+  MYSQL_DATABASE: db_name
+
+
+probes:
+  enabled: false
+  readinessProbe:
+    tcpSocket:
+      port: 5000
+    initialDelaySeconds: 120
+    periodSeconds: 10
+  livenessProbe:
+    tcpSocket:
+      port: 5000
+    initialDelaySeconds: 120
+    periodSeconds: 10
+
+initscript:
+  enabled: false
+  name: flask-init

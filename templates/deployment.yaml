@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.labels.app }}-deployment
+  namespace: {{ .Values.namespace | quote }}
+  labels: {{ include "mylabels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels: {{ include "mylabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{ include "mylabels" . | nindent 8 }}
+    spec:
+      {{- if .Values.serviceAccount.enabled }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      {{- end }}
+      imagePullSecrets:
+      - name: regcd
+      containers:
+      - name: {{ .Values.labels.app }}-app
+        image: {{ include "myimage" . }}
+        ports:
+        - containerPort: {{ .Values.ports.port }}
+        resources: {{ .Values.resources | toYaml | nindent 10 }}
+        {{- if .Values.secrets.enabled }}
+        env: {{ include "envsecret" . | indent 8 }}
+        {{- end }}
+        {{- if .Values.probes.enabled }}
+        readinessProbe: {{ .Values.probes.readinessProbe | toYaml | nindent 10 }}
+        livenessProbe: {{ .Values.probes.livenessProbe | toYaml | nindent 10 }}
+        {{- end }}
+        {{- if or .Values.volumes.enabled .Values.initscript.enabled }}
+        volumeMounts:
+        {{- if .Values.volumes.enabled }}
+        - name: {{ .Values.volumes.mountPathName }}
+          mountPath: {{ .Values.volumes.path }}
+        {{- end }}
+        {{- if .Values.initscript.enabled }}
+        - name: initsql
+          mountPath: /docker-entrypoint-initdb.d
+        {{- end -}}
+        {{- end }}
+      {{- if or .Values.volumes.enabled .Values.initscript.enabled }}
+      volumes:
+      {{- if .Values.volumes.enabled }}
+      - name: {{ .Values.volumes.mountPathName }}
+        persistentVolumeClaim:
+         claimName: {{ .Values.volumes.pvc }}
+      {{- end }}
+      {{- if .Values.initscript.enabled }}
+      - name: initsql   
+        configMap:
+          name: {{ .Values.labels.app}}-init-cm
+          items:
+          - key: init.sql
+            path: init.sql
+      {{- end }}
+      {{- end }}
+      

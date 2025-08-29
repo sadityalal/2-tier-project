@@ -1,0 +1,12 @@
+{{- if .Values.configmaps.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: {{ .Values.labels.app}}-init-cm
+  labels: {{ include "mylabels" . | nindent 4 }}
+data:
+  init.sql: |
+    {{- .Files.Get "files/init.sql" | nindent 4 }}
+
+{{- end -}}    

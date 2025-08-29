@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.labels.app }}-svc
+  namespace: {{ .Values.namespace | quote }}
+spec:
+  selector: {{ include "mylabels" . | nindent 4 }}
+  ports:
+  - port: {{ .Values.ports.port }}
+    targetPort: {{ .Values.ports.targetPort }}
+    {{- if eq .Values.service.type "NodePort" }}
+    nodePort: {{ .Values.ports.nodePort }}
+    {{- end }}
+    protocol: TCP
+  type: {{ .Values.service.type }}
+  
