@@ -50,3 +50,14 @@ jobs:
           message: "Update deployment image to ${{ needs.getversion.outputs.version }}"
           add: 'values-flask.yaml values-nginx.yaml'
           new_branch: action_branch
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.REPO_PAT }}
+          commit-message: "Update deployment images to ${{ needs.getversion.outputs.version }}"
+          branch: action_branch
+          base: main
+          title: "Update Deployment Images to ${{ needs.getversion.outputs.version }}"
+          body: "Automatic update of deployment image tags to version ${{ needs.getversion.outputs.version }}"
+          draft: false
