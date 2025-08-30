@@ -4,7 +4,7 @@ namespace: "frontend"
 image:
   repository: saurabhred
   name: frontend-nginx
-  tag: latest
+  tag: 0.1.1
 
 ports:
   port: 80
