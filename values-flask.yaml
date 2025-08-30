@@ -46,17 +46,17 @@ resources:
     cpu: 250m
 
 secrets:
-  enabled: false
+  enabled: true
   name: flask-sec
 
 configmaps:
   enabled: false
 
 env:
-  MYSQL_ROOT_PASSWORD: main_key
-  MYSQL_PASSWORD: user_key
-  MYSQL_USER: username
-  MYSQL_DATABASE: db_name
+  DB_PASSWORD: user_key
+  DB_USER: username
+  DB_NAME: db_name
+  DB_HOST: "database-svc.database.svc.cluster.local"
 
 
 probes:
