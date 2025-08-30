@@ -56,7 +56,7 @@ env:
   DB_PASSWORD: user_key
   DB_USER: username
   DB_NAME: db_name
-  DB_HOST: "database-svc.database.svc.cluster.local"
+  DB_HOST: host_key
 
 
 probes:
