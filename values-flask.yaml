@@ -4,7 +4,7 @@ namespace: "backend"
 image:
   repository: saurabhred
   name: backend-flask
-  tag: latest
+  tag: 0.1.1
 
 ports:
   port: 5000
