@@ -2,7 +2,7 @@ replicaCount: 1
 namespace: "database"
 
 image:
-  repository: saurabhred
+  repository: ghcr.io/sadityalal
   name: mysql-db
   tag: 9.4.0
 

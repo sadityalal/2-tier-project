@@ -2,7 +2,7 @@ replicaCount: 1
 namespace: "frontend"
 
 image:
-  repository: saurabhred
+  repository: ghcr.io/sadityalal
   name: frontend-nginx
   tag: 0.1.2
 
