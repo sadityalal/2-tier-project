@@ -1,6 +1,6 @@
 apiVersion: v2
 name: 2-tier-app
-description: Helm chart for database
+description: This is a 2 tier app using nginx as frontend, flask as backend and mysql as database. Same templates can be used for all 3 services. just update the values.yaml accordingly.
 
 type: application
 

@@ -4,7 +4,7 @@ namespace: "database"
 image:
   repository: ghcr.io/sadityalal
   name: mysql-db
-  tag: 9.4.0
+  tag: 9.0.4
 
 ports:
   port: 3306
